@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CreateUser.css';
-
+// API URL - uses environment variable in production, localhost in development
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 function CreateUser() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

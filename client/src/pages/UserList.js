@@ -4,6 +4,9 @@ import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import './UserList.css';
 
+// API URL - uses environment variable in production, localhost in development
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function UserList() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
