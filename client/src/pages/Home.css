@@ -1,0 +1,126 @@
+.home {
+  min-height: 100vh;
+}
+
+.hero {
+  text-align: center;
+  color: white;
+  padding: 40px 20px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero > p {
+  font-size: 20px;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  margin-bottom: 12px;
+  color: white;
+}
+
+.feature-card p {
+  opacity: 0.9;
+  color: white;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.cta-buttons .btn {
+  font-size: 18px;
+  padding: 14px 28px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.info-section {
+  margin-top: 40px;
+}
+
+.info-section .card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.info-section h2 {
+  color: #333;
+  margin-bottom: 24px;
+  font-size: 28px;
+}
+
+.steps {
+  list-style: none;
+  counter-reset: step-counter;
+  padding-left: 0;
+}
+
+.steps li {
+  counter-increment: step-counter;
+  margin-bottom: 24px;
+  padding-left: 50px;
+  position: relative;
+}
+
+.steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #667eea;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.steps li strong {
+  display: block;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.steps li p {
+  color: #666;
+  line-height: 1.6;
+}
