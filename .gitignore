@@ -8,6 +8,11 @@ client/node_modules/
 .env.development
 .env.test
 .env.production
+client/.env
+client/.env.local
+client/.env.development
+client/.env.test
+client/.env.production
 
 # Build outputs
 client/build/

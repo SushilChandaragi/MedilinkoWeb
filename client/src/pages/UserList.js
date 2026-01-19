@@ -22,12 +22,13 @@ function UserList() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const url = filter === 'all' ? '/api/users' : `/api/users?role=${filter}`;
+      const url = filter === 'all' ? `${API_URL}/api/users` : `${API_URL}/api/users?role=${filter}`;
       const response = await axios.get(url);
       setUsers(response.data);
       setError(null);
     } catch (err) {
       setError('Failed to load users');
+      console.error('Error fetching users:', err);
     } finally {
       setLoading(false);
     }

@@ -95,7 +95,7 @@ function CreateUser() {
         if (formData.licenseNumber) userData.licenseNumber = formData.licenseNumber;
       }
 
-      const response = await axios.post('/api/users', userData);
+      const response = await axios.post(`${API_URL}/api/users`, userData);
       setSuccess(true);
       
       // Redirect to user profile after 2 seconds
@@ -104,6 +104,7 @@ function CreateUser() {
       }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create user');
+      console.error('Error creating user:', err);
     } finally {
       setLoading(false);
     }

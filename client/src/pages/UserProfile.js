@@ -22,11 +22,12 @@ function UserProfile() {
   const fetchUserData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/users/qr/${qrCodeId}`);
+      const response = await axios.get(`${API_URL}/api/users/qr/${qrCodeId}`);
       setUser(response.data);
       setError(null);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load user data');
+      console.error('Error fetching user:', err);
     } finally {
       setLoading(false);
     }
