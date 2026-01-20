@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import './UserList.css';
@@ -13,6 +13,7 @@ function UserList() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -34,6 +35,12 @@ function UserList() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('adminUsername');
+    navigate('/login');
+  };
+
   const showQRCode = (user) => {
     setSelectedUser(user);
   };
@@ -52,30 +59,47 @@ function UserList() {
   };
 
   if (loading) {
-    return <div className="loading">Loading users...</div>;
+    return (
+      <div className="loading-screen">
+        <div className="loader"></div>
+        <p>Loading users...</p>
+      </div>
+    );
   }
 
   return (
     <div className="user-list-page">
-      <div className="header">
-        <div className="header-content">
-          <Link to="/" className="logo">🏥 MediLinko</Link>
-          <nav className="nav">
-            <Link to="/">Home</Link>
-            <Link to="/create-user">Create User</Link>
-          </nav>
+      <nav className="navbar">
+        <div className="navbar-content">
+          <div className="navbar-brand">
+            <span className="brand-icon">🏥</span>
+            <span className="brand-text">MediLinko Admin</span>
+          </div>
+          <div className="navbar-actions">
+            <Link to="/create-user" className="nav-btn">
+              <span>➕</span>
+              New User
+            </Link>
+            <button onClick={handleLogout} className="nav-btn logout-btn">
+              <span>🚪</span>
+              Logout
+            </button>
+          </div>
         </div>
-      </div>
+      </nav>
 
       <div className="container">
         <div className="page-header">
-          <h1>All Users</h1>
+          <div className="header-left">
+            <h1>User Management</h1>
+            <p>Manage all registered users and their profiles</p>
+          </div>
           <div className="filter-buttons">
             <button 
               className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
               onClick={() => setFilter('all')}
             >
-              All ({users.length})
+              All
             </button>
             <button 
               className={`filter-btn ${filter === 'user' ? 'active' : ''}`}
@@ -98,11 +122,21 @@ function UserList() {
           </div>
         </div>
 
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div className="error-alert">
+            <span>⚠️</span>
+            {error}
+          </div>
+        )}
 
         {users.length === 0 ? (
-          <div className="card">
-            <p className="no-users">No users found. <Link to="/create-user">Create one now</Link></p>
+          <div className="empty-state">
+            <div className="empty-icon">📋</div>
+            <h2>No users found</h2>
+            <p>Get started by creating your first user</p>
+            <Link to="/create-user" className="btn-primary">
+              Create User
+            </Link>
           </div>
         ) : (
           <div className="users-grid">
@@ -121,18 +155,31 @@ function UserList() {
                 </div>
 
                 <div className="user-card-body">
-                  {user.email && <p><strong>Email:</strong> {user.email}</p>}
-                  {user.phone && <p><strong>Phone:</strong> {user.phone}</p>}
-                  <p><strong>Profile:</strong> {user.isProfileComplete ? '✅ Complete' : '⚠️ Incomplete'}</p>
+                  {user.email && (
+                    <div className="info-row">
+                      <span className="info-icon">📧</span>
+                      <span>{user.email}</span>
+                    </div>
+                  )}
+                  {user.phone && (
+                    <div className="info-row">
+                      <span className="info-icon">📱</span>
+                      <span>{user.phone}</span>
+                    </div>
+                  )}
+                  <div className="info-row">
+                    <span className="info-icon">{user.isProfileComplete ? '✅' : '⚠️'}</span>
+                    <span>{user.isProfileComplete ? 'Complete Profile' : 'Incomplete Profile'}</span>
+                  </div>
                 </div>
 
                 <div className="user-card-footer">
-                  <Link to={`/profile/${user.qrCodeId}`} className="btn btn-primary btn-sm">
+                  <Link to={`/profile/${user.qrCodeId}`} className="btn-card btn-view">
                     View Profile
                   </Link>
                   <button 
                     onClick={() => showQRCode(user)} 
-                    className="btn btn-secondary btn-sm"
+                    className="btn-card btn-qr"
                   >
                     Show QR
                   </button>
@@ -147,7 +194,7 @@ function UserList() {
           <div className="modal-overlay" onClick={() => setSelectedUser(null)}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>QR Code for {selectedUser.fullName || 'User'}</h2>
+                <h2>QR Code</h2>
                 <button className="close-btn" onClick={() => setSelectedUser(null)}>×</button>
               </div>
               <div className="modal-body">

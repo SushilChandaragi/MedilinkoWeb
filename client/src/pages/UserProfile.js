@@ -43,23 +43,36 @@ function UserProfile() {
   };
 
   if (loading) {
-    return <div className="loading">Loading user profile...</div>;
+    return (
+      <div className="loading-screen">
+        <div className="loader"></div>
+        <p>Loading profile...</p>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="container">
-        <div className="error">{error}</div>
-        <Link to="/" className="btn btn-primary">Go Home</Link>
+      <div className="error-page">
+        <div className="error-content">
+          <div className="error-icon">⚠️</div>
+          <h1>Error</h1>
+          <p>{error}</p>
+          <Link to="/login" className="btn-primary">Go to Login</Link>
+        </div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="container">
-        <div className="error">User not found</div>
-        <Link to="/" className="btn btn-primary">Go Home</Link>
+      <div className="error-page">
+        <div className="error-content">
+          <div className="error-icon">👤</div>
+          <h1>User Not Found</h1>
+          <p>The profile you're looking for doesn't exist.</p>
+          <Link to="/login" className="btn-primary">Go to Login</Link>
+        </div>
       </div>
     );
   }
@@ -68,26 +81,29 @@ function UserProfile() {
 
   return (
     <div className="profile-page">
-      <div className="header">
-        <div className="header-content">
-          <Link to="/" className="logo">🏥 MediLinko</Link>
-          <nav className="nav">
-            <Link to="/users">All Users</Link>
-          </nav>
+      <nav className="profile-navbar">
+        <div className="navbar-content">
+          <div className="navbar-brand">
+            <span className="brand-icon">🏥</span>
+            <span className="brand-text">MediLinko</span>
+          </div>
         </div>
-      </div>
+      </nav>
 
       <div className="container">
         {/* Profile Header */}
         <div className="profile-header">
-          <div className="profile-avatar">
+          <div className="profile-avatar-large">
             {user.fullName ? user.fullName.charAt(0).toUpperCase() : '?'}
           </div>
           <div className="profile-header-info">
             <h1>{user.fullName || 'Unknown User'}</h1>
-            <p className={`role-badge role-${user.role}`}>{user.role ? user.role.toUpperCase() : 'USER'}</p>
+            <span className={`role-badge-large role-${user.role}`}>
+              {user.role ? user.role.toUpperCase() : 'USER'}
+            </span>
           </div>
-          <button onClick={() => setShowQR(!showQR)} className="btn btn-primary">
+          <button onClick={() => setShowQR(!showQR)} className="qr-toggle-btn">
+            <span>{showQR ? '🔒' : '🔓'}</span>
             {showQR ? 'Hide QR Code' : 'Show QR Code'}
           </button>
         </div>
